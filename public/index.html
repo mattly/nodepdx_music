@@ -1,0 +1,35 @@
+<html>
+<head>
+  <script src='/socket.io/socket.io.js'></script>
+  <script>
+    var socket = io.connect('http://localhost:8000');
+
+    var sendValue = function(event){
+      var send = {};
+      send[event.target.id] = event.target.value;
+      socket.emit('value', send);
+    };
+
+    document.addEventListener('readystatechange', function(){
+      if (document.readyState == 'complete') {
+        ['echotime','echogain'].forEach(function(control){
+          document.getElementById(control)
+            .addEventListener('change', sendValue);
+        });
+      }
+    });
+
+  </script>
+</head>
+<body>
+  <form>
+    echo time
+    <input id='echotime' type='number' min='0' max='1000' step='25' value='250'>
+    <br>
+
+    echo gain
+    <input id='echogain' type='number' min='0' max='100' step='5' value='50'>
+
+  </form>
+</body>
+</html>
